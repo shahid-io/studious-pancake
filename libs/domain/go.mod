@@ -1,4 +1,4 @@
-module github.com/shahid-io/wiplash/libs/domain
+module github.com/shahid-io/studious-pancake/libs/domain
 
 go 1.24
 

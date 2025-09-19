@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/shahid-io/wiplash/libs/domain/user"
-	"github.com/shahid-io/wiplash/pkg/config"
-	"github.com/shahid-io/wiplash/pkg/database"
+	"github.com/shahid-io/studious-pancake/libs/domain/user"
+	"github.com/shahid-io/studious-pancake/pkg/config"
+	"github.com/shahid-io/studious-pancake/pkg/database"
 )
 
 func main() {
