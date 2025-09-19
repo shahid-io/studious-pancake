@@ -3,11 +3,11 @@ version: '3.9'
 services:
   postgres:
     image: postgres:15
-    container_name: studious-pancake-postgres
+    container_name: wiplash-postgres  # Match what you've been using
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: secret
+      POSTGRES_PASSWORD: root  # Change from 'secret' to 'root'
       POSTGRES_DB: mydb
     ports:
       - "5432:5432"
