@@ -1,0 +1,23 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+cmd = "go build -o tmp/main ./main.go"
+bin = "tmp/main"
+include_ext = ["go", "mod", "sum", "env"]
+exclude_dir = ["tmp", ".git"]
+build_flags = "-v"
+
+[log]
+time = true
+
+[color]
+main = "yellow"
+watcher = "cyan"
+build = "green"
+runner = "magenta"
+
+[watch]
+dirs = ["./", "../../pkg", "../../libs/domain"]
+extensions = ["go", "mod", "sum", "env"]
+exclude_dirs = ["tmp", ".git"]
