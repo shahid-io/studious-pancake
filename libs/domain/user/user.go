@@ -56,12 +56,14 @@ type UserSession struct {
 // UserVerification represents email/phone verification status
 type UserVerification struct {
 	gorm.Model
-	UserID        string    `gorm:"not null;uniqueIndex" json:"user_id"`
-	EmailVerified bool      `gorm:"default:false" json:"email_verified"`
-	PhoneVerified bool      `gorm:"default:false" json:"phone_verified"`
-	EmailToken    string    `json:"email_token,omitempty"`
-	PhoneToken    string    `json:"phone_token,omitempty"`
-	VerifiedAt    time.Time `json:"verified_at,omitempty"`
+	UserID              string    `gorm:"not null;uniqueIndex" json:"user_id"`
+	EmailVerified       bool      `gorm:"default:false" json:"email_verified"`
+	PhoneVerified       bool      `gorm:"default:false" json:"phone_verified"`
+	EmailToken          string    `json:"email_token,omitempty"`
+	PhoneToken          string    `json:"phone_token,omitempty"`
+	PasswordResetToken  string    `json:"password_reset_token,omitempty"`
+	PasswordResetExpiry time.Time `json:"password_reset_expiry,omitempty"`
+	VerifiedAt          time.Time `json:"verified_at,omitempty"`
 }
 
 // UserActivity represents user activity tracking

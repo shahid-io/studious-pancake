@@ -10,8 +10,15 @@
 # Go build output
 **/auth-service/auth-service
 **/feed-service/feed-service
-/tmp/
+**/tmp/
+**/build/
+tmp/
 build/
+
+# Air development tool files
+**/.air.toml.tmp
+**/tmp/main
+**/tmp/build-errors.log
 
 # Toolchain archives
 *.tar.gz
