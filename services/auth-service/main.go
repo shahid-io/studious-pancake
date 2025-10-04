@@ -44,7 +44,7 @@ func main() {
 
 	// Initialize Gin router
 	router := gin.Default()
-
+	router.GET("/", getPumpkin)
 	// Middleware
 	router.Use(CORSMiddleware())
 	router.Use(LoggerMiddleware())
@@ -78,6 +78,14 @@ func main() {
 	if err := router.Run(addr); err != nil {
 		log.Fatal("HTTP server failed:", err)
 	}
+}
+
+// Test route public route
+func getPumpkin(c *gin.Context) {
+	c.JSON(http.StatusInternalServerError, gin.H{
+		"success": true,
+		"error":   "Hey, Welcom to Pumpkin",
+	})
 }
 
 // Handlers

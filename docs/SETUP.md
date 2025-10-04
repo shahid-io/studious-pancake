@@ -23,31 +23,31 @@ cp .env.example .env
 
 # Edit with your values
 nano .env  # or use your favorite editor
+
+# Required for Go services:
+# DATABASE_URL, AUTH_SERVICE_PORT, JWT_SECRET, REDIS_URL
 ```
 
 ### 3. Start Dependencies
 
 ```bash
-# Start PostgreSQL, Redis, and other services
 docker-compose up -d postgres redis
 ```
 
 ### 4. Setup Go Workspace
 
 ```bash
-# Initialize and sync Go workspace
 go work sync
 ```
 
 ### 5. Run Your First Service
 
 ```bash
-# Start the auth service
 cd services/auth-service
 go run main.go
 ```
 
-🎉 **You're running!** Access: <http://localhost:8080>
+🎉 **You're running!** Access: http://localhost:8080 (or your AUTH_SERVICE_PORT)
 
 ---
 
@@ -56,29 +56,23 @@ go run main.go
 ### Environment Configuration (.env)
 
 ```bash
-# Database
+# Required for Go services:
+DATABASE_URL=host=localhost user=postgres password=your_secure_password dbname=studious_pancake port=5432 sslmode=disable
+AUTH_SERVICE_PORT=8080
+JWT_SECRET=your-super-secure-jwt-secret-change-in-production
+REDIS_URL=localhost:6379
+
+# Required for Docker Compose (used in docker-compose.yml):
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+# Optional for Docker Compose:
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=your_secure_password
 DB_NAME=studious_pancake
-
-# Redis
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_PASSWORD=
-
-# JWT Authentication
-JWT_SECRET=your-super-secure-jwt-secret-change-in-production
-JWT_EXPIRY=24h
-
-# Service Ports
-AUTH_SERVICE_PORT=8080
-USER_SERVICE_PORT=8081
-BUSINESS_SERVICE_PORT=8082
-BOOKING_SERVICE_PORT=8083
-PAYMENT_SERVICE_PORT=8084
-NOTIFICATION_SERVICE_PORT=8085
 
 # Email (for notifications)
 SMTP_HOST=smtp.gmail.com
@@ -155,6 +149,67 @@ go install github.com/air-verse/air@latest
 # Run with hot reload
 cd services/auth-service
 air
+```
+
+---
+
+## Running Go Services with Docker Compose
+
+You can run your Go services (e.g., auth-service) inside Docker containers for easier deployment and consistency.
+
+### 1. Prepare your environment
+
+- Make sure your `.env` file contains all required variables for both Go and Docker Compose:
+  - `DATABASE_URL`, `AUTH_SERVICE_PORT`, `JWT_SECRET`, `REDIS_URL` (for Go)
+  - `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` (for Docker Compose)
+
+### 2. Build and start all services
+
+```bash
+docker-compose up --build -d
+```
+
+This will:
+- Build the Go service images (if Dockerfile is present in each service directory)
+- Start Postgres, Redis, and your Go services as containers
+
+### 3. View logs
+
+```bash
+docker-compose logs -f
+```
+
+### 4. Access your services
+
+- Auth service: `http://localhost:<AUTH_SERVICE_PORT>`
+- Other services: Use their respective ports as defined in `.env` and `docker-compose.yml`
+
+### 5. Stop all services
+
+```bash
+docker-compose down
+```
+
+### 6. Rebuild images (if you change code)
+
+```bash
+docker-compose build
+docker-compose up -d
+```
+
+### 7. Run database migrations (inside container)
+
+If you have a migration container or script, run it using:
+
+```bash
+docker-compose run --rm <migration-service-name>
+```
+
+Or exec into the container:
+
+```bash
+docker exec -it <auth-service-container-name> bash
+go run cmd/migrate/main.go
 ```
 
 ---

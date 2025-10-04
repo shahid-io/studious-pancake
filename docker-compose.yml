@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.8'
 
 services:
   postgres:
@@ -6,13 +6,35 @@ services:
     container_name: wiplash-postgres  # Match what you've been using
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root  # Change from 'secret' to 'root'
-      POSTGRES_DB: mydb
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      AUTH_SERVICE_PORT: ${AUTH_SERVICE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      REDIS_URL: ${REDIS_HOST}:${REDIS_PORT}
+    ports:
+      - "${AUTH_SERVICE_PORT}:8080"
+    depends_on:
+      - postgres
+      - redis
 
 volumes:
   postgres_data:

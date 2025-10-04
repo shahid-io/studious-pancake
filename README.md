@@ -36,16 +36,25 @@ Microservices architecture built with Go, PostgreSQL, and modern web technologie
 ## 🚦 Quick Start
 
 ```bash
-# Clone repository
+# 1. Clone repository
 git clone https://github.com/shahid-io/studious-pancake.git
+cd studious-pancake
 
-# Setup environment
+# 2. Setup environment
 cp .env.example .env
+nano .env  # Set DATABASE_URL, AUTH_SERVICE_PORT, JWT_SECRET, REDIS_URL for Go services
+           # Set REDIS_HOST, REDIS_PORT, REDIS_PASSWORD for Docker Compose
 
-# Start services
-docker-compose up -d
+# 3. Start dependencies (Postgres, Redis)
+docker-compose up -d postgres redis
 
-# Run application
+# 4. Sync Go workspace
 go work sync
+
+# 5. Start the auth service (Go)
 cd services/auth-service
 go run main.go
+
+# The auth service will be available at:
+# http://localhost:<AUTH_SERVICE_PORT>
+```
