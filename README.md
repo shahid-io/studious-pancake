@@ -45,15 +45,16 @@ cp .env.example .env
 nano .env  # Set DATABASE_URL, AUTH_SERVICE_PORT, JWT_SECRET, REDIS_URL for Go services
            # Set REDIS_HOST, REDIS_PORT, REDIS_PASSWORD for Docker Compose
 
-# 3. Start dependencies (Postgres, Redis)
-docker-compose up -d postgres redis
+# 3. One-time setup (for new developers)
+make setup
 
-# 4. Sync Go workspace
-go work sync
+# 4. Start development environment
+make docker-up
 
-# 5. Start the auth service (Go)
-cd services/auth-service
-go run main.go
+# 5. Start the auth service
+make auth-dev        # With hot reload (recommended)
+# OR
+make auth-dev-simple # Simple mode without Air
 
 # The auth service will be available at:
 # http://localhost:<AUTH_SERVICE_PORT>
@@ -66,54 +67,83 @@ go run main.go
 #### **Quick Development (Recommended)**
 
 ```bash
-cd services/auth-service
+# From project root directory
+cd studious-pancake
 
 # Option 1: Hot reload with Air (recommended for active development)
-make dev
+make auth-dev
 
 # Option 2: Simple development without Air
-make dev-simple
+make auth-dev-simple
 
-# Option 3: Just Go (simplest)
-go run main.go
+# Option 3: Using service-specific commands
+cd services/auth-service
+make dev              # Hot reload
+make dev-simple       # Simple mode
+go run main.go        # Direct Go run
 ```
 
-#### **Development Tools**
+#### **Root-Level Commands (Recommended)**
 
 ```bash
-# Install development tools
-make install-tools
+# Development
+make auth-dev         # Start auth service with hot reload
+make auth-dev-simple  # Start auth service with go run
+make all-dev          # Start all services (currently just auth)
 
-# Build the application
-make build
+# Building
+make auth-build       # Build auth service
+make all-build        # Build all services
 
-# Run tests
-make test
+# Testing
+make auth-test        # Run auth service tests
+make all-test         # Run all tests
 
-# Run tests with coverage
-make test-coverage
+# Cleaning
+make auth-clean       # Clean auth service artifacts
+make all-clean        # Clean all build artifacts
 
-# Clean build artifacts
-make clean
+# Environment
+make docker-up        # Start PostgreSQL & Redis
+make docker-down      # Stop development environment
+make setup           # One-time setup for new developers
 
-# Run linter
-make lint
+# View all commands
+make help            # Show all available commands
+```
 
-# View all available commands
+#### **Service-Specific Commands**
+
+```bash
+# For more detailed auth-service commands
+cd services/auth-service
 make help
 ```
 
-#### **Docker Development**
-
-```bash
-# Build Docker image
-make docker-build
-
-# Run in Docker container
-make docker-run
-```
-
 ### 📋 **Available Make Commands**
+
+#### **Root Directory Commands (Recommended)**
+
+| Command | Description |
+|---------|-------------|
+| `make help` | Show all available commands with descriptions |
+| `make auth-dev` | Start auth service with Air (hot reload) |
+| `make auth-dev-simple` | Start auth service with go run |
+| `make auth-build` | Build auth service binary |
+| `make auth-test` | Run auth service tests |
+| `make auth-clean` | Clean auth service artifacts |
+| `make all-dev` | Start all services in development mode |
+| `make all-build` | Build all services |
+| `make all-test` | Run all tests |
+| `make all-clean` | Clean all build artifacts |
+| `make docker-up` | Start PostgreSQL & Redis containers |
+| `make docker-down` | Stop development environment |
+| `make setup` | One-time setup for new developers |
+| `make workspace-sync` | Sync Go workspace |
+| `make deps` | Download dependencies for all services |
+| `make install-tools` | Install development tools (Air, golangci-lint) |
+
+#### **Service-Specific Commands (services/auth-service/)**
 
 | Command | Description |
 |---------|-------------|
@@ -128,7 +158,7 @@ make docker-run
 | `make lint` | Run golangci-lint |
 | `make docker-build` | Build Docker image |
 | `make docker-run` | Run Docker container |
-| `make help` | Show all available commands |
+| `make help` | Show service-specific commands |
 
 ### 🛠️ **Development Setup**
 
@@ -363,11 +393,67 @@ studious-pancake/
 
 ## Contributing
 
+### 🚀 **Common Development Workflows**
+
+#### **New Developer Setup**
+
+```bash
+# 1. Clone and setup
+git clone https://github.com/shahid-io/studious-pancake.git
+cd studious-pancake
+
+# 2. One-time setup
+make setup
+
+# 3. Start developing
+make auth-dev
+```
+
+#### **Daily Development**
+
+```bash
+# Start development environment
+make docker-up          # Start PostgreSQL & Redis
+make auth-dev           # Start auth service with hot reload
+
+# Make your changes...
+# Service automatically reloads on file changes
+
+# Test your changes
+make auth-test          # Run tests
+```
+
+#### **Before Committing**
+
+```bash
+# Clean and test everything
+make all-clean
+make all-build
+make all-test
+
+# Or for just auth service
+make auth-clean
+make auth-build
+make auth-test
+```
+
+#### **Quick Commands Reference**
+
+```bash
+make help              # Show all commands
+make auth-dev          # Start development (most common)
+make auth-test         # Run tests
+make docker-up         # Start database
+make auth-build        # Build binary
+```
+
+### 📝 **Contribution Process**
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Follow the development workflow (`make dev` for testing)
-5. Run tests (`make test`)
+4. Follow the development workflow (`make auth-dev` for testing)
+5. Run tests (`make auth-test`)
 6. Commit your changes (`git commit -m 'Add amazing feature'`)
 7. Push to the branch (`git push origin feature/amazing-feature`)
 8. Open a Pull Request

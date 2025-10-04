@@ -1,3 +1,11 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.test
+
 # Binaries
 *.exe
 *.exe~
