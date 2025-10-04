@@ -2,7 +2,7 @@
 
 A scalable microservices-based booking system for healthcare, beauty, wellness, and service industries.
 
-## 🚀 Features
+## Features
 
 - Multi-role authentication (Customers, Business Owners, Staff, Admin)
 - Real-time availability management
@@ -11,11 +11,11 @@ A scalable microservices-based booking system for healthcare, beauty, wellness, 
 - Review and rating system
 - Notification system
 
-## 🏗️ Architecture
+## Architecture
 
 Microservices architecture built with Go, PostgreSQL, and modern web technologies.
 
-## 📦 Services
+## Services
 
 - Auth Service - Authentication & Authorization
 - User Service - User management
@@ -24,7 +24,7 @@ Microservices architecture built with Go, PostgreSQL, and modern web technologie
 - Payment Service - Payment processing
 - Notification Service - Email/SMS notifications
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Backend**: Go 1.24+
 - **Database**: PostgreSQL 15+
@@ -33,7 +33,7 @@ Microservices architecture built with Go, PostgreSQL, and modern web technologie
 - **Frontend**: React + TypeScript
 - **Mobile**: React Native
 
-## 🚦 Quick Start
+## Quick Start
 
 ```bash
 # 1. Clone repository
