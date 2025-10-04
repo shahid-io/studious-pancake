@@ -2,22 +2,38 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-cmd = "go build -o tmp/main ./main.go"
-bin = "tmp/main"
-include_ext = ["go", "mod", "sum", "env"]
-exclude_dir = ["tmp", ".git"]
-build_flags = "-v"
+  cmd = "go build -o tmp/auth-service ."
+  bin = "tmp/auth-service"
+  full_bin = "./tmp/auth-service"
+  include_ext = ["go", "tpl", "tmpl", "html"]
+  exclude_dir = ["assets", "tmp", "vendor", "frontend/node_modules"]
+  include_dir = []
+  exclude_file = []
+  exclude_regex = ["_test.go"]
+  exclude_unchanged = false
+  follow_symlink = false
+  log = "tmp/errors.log"
+  poll = false
+  poll_interval = 0
+  delay = 1000
+  stop_on_error = true
+  send_interrupt = false
+  kill_delay = "0s"
 
 [log]
-time = true
+  time = true
+  main_only = false
 
 [color]
-main = "yellow"
-watcher = "cyan"
-build = "green"
-runner = "magenta"
+  main = "yellow"
+  watcher = "cyan"
+  build = "green"
+  runner = "green"
 
-[watch]
-dirs = ["./", "../../pkg", "../../libs/domain"]
-extensions = ["go", "mod", "sum", "env"]
-exclude_dirs = ["tmp", ".git"]
+[misc]
+  clean_on_exit = false
+
+[[proxy]]
+  enabled = false
+  proxy_port = 8090
+  app_port = 8080

@@ -8,8 +8,10 @@
 *.out
 
 # Go build output
-**/auth-service/auth-service
-**/feed-service/feed-service
+**/auth-service
+**/auth-service-linux
+**/feed-service
+**/feed-service-linux
 **/tmp/
 **/build/
 tmp/
@@ -18,7 +20,13 @@ build/
 # Air development tool files
 **/.air.toml.tmp
 **/tmp/main
+**/tmp/auth-service
+**/tmp/errors.log
 **/tmp/build-errors.log
+
+# Coverage reports
+coverage.out
+coverage.html
 
 # Toolchain archives
 *.tar.gz
